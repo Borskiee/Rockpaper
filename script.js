@@ -1,10 +1,12 @@
-let wins = 0;
-let losses = 0;
-let ties = 0;
+const score = JSON.parse(localStorage.getItem("score")) || {
+ wins: 0,
+  losses: 0,
+  ties: 0
+}
 
 function updateScoreboard() {
   let scoreboard = document.getElementById("scoreboard");
-  scoreboard.innerHTML = `Wins: ${wins} | Losses: ${losses} | Ties: ${ties}`;
+  scoreboard.innerHTML = `Wins: ${score.wins} | Losses: ${score.losses} | Draws: ${score.ties}`;
 }
 
 function showResult(text, playerEmoji, computerEmoji) {
@@ -17,17 +19,18 @@ function playRock() {
   let computerMove = choices[Math.floor(Math.random() * choices.length)];
 
   if (computerMove === "Rock") {
-    ties++;
-    showResult("Tie.", "✊", "✊");
+    score.ties++;
+    showResult("Draw.", "✊", "✊");
   } else if (computerMove === "Paper") {
-    losses++;
+    score.losses++;
     showResult("You lose.", "✊", "🖐️");
   } else {
-    wins++;
+    score.wins++;
     showResult("You win.", "✊", "✌️");
   }
 
   updateScoreboard();
+  localStorage.setItem("score", JSON.stringify(score));
 }
 
 function playPaper() {
@@ -35,17 +38,18 @@ function playPaper() {
   let computerMove = choices[Math.floor(Math.random() * choices.length)];
 
   if (computerMove === "Rock") {
-    wins++;
+    score.wins++;
     showResult("You win.", "🖐️", "✊");
   } else if (computerMove === "Paper") {
-    ties++;
-    showResult("Tie.", "🖐️", "🖐️");
+    score.ties++;
+    showResult("Draw.", "🖐️", "🖐️");
   } else {
-    losses++;
+    score.losses++;
     showResult("You lose.", "🖐️", "✌️");
   }
 
   updateScoreboard();
+  localStorage.setItem("score", JSON.stringify(score));
 }
 
 function playScissors() {
@@ -53,23 +57,26 @@ function playScissors() {
   let computerMove = choices[Math.floor(Math.random() * choices.length)];
 
   if (computerMove === "Rock") {
-    losses++;
+    score.losses++;
     showResult("You lose.", "✌️", "✊");
   } else if (computerMove === "Paper") {
-    wins++;
+    score.wins++;
     showResult("You win.", "✌️", "🖐️");
   } else {
-    ties++;
-    showResult("Tie.", "✌️", "✌️");
+    score.ties++;
+    showResult("Draw.", "✌️", "✌️");
   }
 
   updateScoreboard();
+  localStorage.setItem("score", JSON.stringify(score));
 }
 
 function resetGame() {
-  wins = 0;
-  losses = 0;
-  ties = 0;
+  score.wins = 0;
+  score.losses = 0;
+  score.ties = 0;
+
+  localStorage.setItem("score", JSON.stringify(score));
 
   document.getElementById("result").innerText = "";
   updateScoreboard();
